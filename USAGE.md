@@ -2,6 +2,8 @@
 
 How to call the chunking, embedding, and indexing APIs. All configurations are **optional**, **backward compatible**, and configurable via request parameters.
 
+**Backend config:** Defaults and profiles (chunking strategy, embedding model, indexing similarity) are defined in **static config files** on the server (e.g. `static.json` under `app/config/chunking`, `app/config/embedding`, `app/config/indexing`). Requests can override these per call; if you omit a parameter, the backend uses the value from the active profile in those static files.
+
 ---
 
 ## Sample API Requests
@@ -24,6 +26,19 @@ Base URL: your service root (e.g. `https://api.example.com`).
 
 ### 2. Embed chunks — `POST /embed`
 
+Embedding config (model, normalize, preprocessing, etc.) is **set by the backend** in static config; you only send `embedding_config` in the request when you want to override.
+
+**Minimal request (use backend defaults):**
+
+```json
+{
+  "tenant_id": "tenant-001",
+  "limit": 100
+}
+```
+
+**With overrides (optional):**
+
 ```json
 {
   "tenant_id": "tenant-001",
@@ -42,24 +57,35 @@ Base URL: your service root (e.g. `https://api.example.com`).
 ```
 
 - **Required:** `tenant_id`, `limit` (1–1000).
-- **Optional:** `embedding_config` — any subset of `model`, `normalize`, `normalization_type`, `preprocessing`, etc. Omit to use active profile defaults.
+- **Optional:** `embedding_config` — override any subset of the backend config (model, normalize, normalization_type, preprocessing, etc.). Omit to use the active profile from backend static config.
 
 ### 3. Index embeddings — `POST /index`
+
+Indexing strategy (similarity, hnsw_config, index_settings, etc.) is **set by the backend** in static config. Use a **profile name** (e.g. `cosine_knn`) to use that profile’s settings, or send an **inline** object to override.
+
+**Minimal request (use a backend profile by name):**
 
 ```json
 {
   "tenant_id": "tenant-001",
   "index_name": "my-search-index",
   "indexing_strategy": "cosine_knn",
-  "embedding_ids": ["emb-1", "emb-2"],
   "limit": 500
 }
 ```
 
-- **Required:** `tenant_id`, `index_name`, `indexing_strategy` (profile name, e.g. `cosine_knn`, `l2_knn`, `dot_product_knn`, or inline `{ "similarity": "cosine", "hnsw_config": { ... } }`).
-- **Exactly one of:** `embedding_ids` (max 1000) or `limit` (1–1000) — which embeddings to publish.
+**With specific embedding IDs (optional):**
 
-**Inline indexing config (optional):**
+```json
+{
+  "tenant_id": "tenant-001",
+  "index_name": "my-search-index",
+  "indexing_strategy": "cosine_knn",
+  "embedding_ids": ["emb-1", "emb-2"]
+}
+```
+
+**With inline config (override backend profile):**
 
 ```json
 {
@@ -73,6 +99,9 @@ Base URL: your service root (e.g. `https://api.example.com`).
   "limit": 500
 }
 ```
+
+- **Required:** `tenant_id`, `index_name`, `indexing_strategy` (profile name, e.g. `cosine_knn`, `l2_knn`, `dot_product_knn`, or inline object to override backend config).
+- **Exactly one of:** `embedding_ids` (max 1000) or `limit` (1–1000) — which embeddings to publish.
 
 ---
 
