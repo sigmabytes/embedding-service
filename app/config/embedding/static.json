@@ -1,0 +1,41 @@
+{
+  "active": "sentence_default",
+  "profiles": {
+    "openai_default": {
+      "strategy": "openai",
+      "model": "text-embedding-ada-002",
+      "normalize": true,
+      "normalization_type": "L2",
+      "preprocessing": {
+        "lowercase": false,
+        "remove_punctuation": false,
+        "max_length": 8192
+      },
+      "batch_size": 100
+    },
+    "sentence_default": {
+      "strategy": "sentence_transformers",
+      "model": "all-MiniLM-L6-v2",
+      "normalize": true,
+      "normalization_type": "L2",
+      "preprocessing": {
+        "lowercase": false,
+        "remove_punctuation": false,
+        "max_length": 8192
+      },
+      "batch_size": 100
+    },
+    "bedrock_default": {
+      "strategy": "bedrock",
+      "model": "amazon.titan-embed-text-v1",
+      "normalize": true,
+      "normalization_type": "L2",
+      "preprocessing": {
+        "lowercase": false,
+        "remove_punctuation": false,
+        "max_length": 8192
+      },
+      "batch_size": 100
+    }
+  }
+}

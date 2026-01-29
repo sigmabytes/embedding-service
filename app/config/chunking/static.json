@@ -1,0 +1,39 @@
+{
+  "active": "default",
+  "profiles": {
+    "default": {
+      "strategy": "fixed_token",
+      "chunk_size": 512,
+      "overlap": 50,
+      "tokenizer": "tiktoken",
+      "preserve_whitespace": true,
+      "custom_params": {}
+    },
+    "sentence": {
+      "strategy": "sentence_based",
+      "chunk_size": 512,
+      "overlap": 0,
+      "min_chunk_size": 100,
+      "max_chunk_size": 2048,
+      "preserve_whitespace": true,
+      "custom_params": {}
+    },
+    "sliding_window": {
+      "strategy": "sliding_window",
+      "chunk_size": 512,
+      "overlap": 50,
+      "tokenizer": "tiktoken",
+      "preserve_whitespace": true,
+      "custom_params": {}
+    },
+    "html_structure": {
+      "strategy": "html_structure",
+      "chunk_size": 512,
+      "overlap": 0,
+      "min_chunk_size": 100,
+      "max_chunk_size": 2048,
+      "preserve_whitespace": true,
+      "custom_params": {}
+    }
+  }
+}

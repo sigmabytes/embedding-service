@@ -1,0 +1,43 @@
+{
+  "profiles": {
+    "cosine_default": {
+      "similarity": "cosine",
+      "hnsw_config": {
+        "m": 16,
+        "ef_construction": 200,
+        "ef_search": 100
+      },
+      "index_settings": {
+        "number_of_shards": 1,
+        "number_of_replicas": 1
+      },
+      "metadata_fields": ["chunk_text", "document_id", "tenant_id"]
+    },
+    "l2_default": {
+      "similarity": "l2",
+      "hnsw_config": {
+        "m": 16,
+        "ef_construction": 200,
+        "ef_search": 100
+      },
+      "index_settings": {
+        "number_of_shards": 1,
+        "number_of_replicas": 1
+      },
+      "metadata_fields": ["chunk_text", "document_id", "tenant_id"]
+    },
+    "dot_product_default": {
+      "similarity": "dot_product",
+      "hnsw_config": {
+        "m": 16,
+        "ef_construction": 200,
+        "ef_search": 100
+      },
+      "index_settings": {
+        "number_of_shards": 1,
+        "number_of_replicas": 1
+      },
+      "metadata_fields": ["chunk_text", "document_id", "tenant_id"]
+    }
+  }
+}
